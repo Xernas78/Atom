@@ -1,0 +1,11 @@
+{
+  "name": "default",
+  "vertex": {
+    "type": true,
+    "path": "vertex/default.glsl"
+  },
+  "fragment": {
+    "type": true,
+    "path": "fragment/default.glsl"
+  }
+}
