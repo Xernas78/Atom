@@ -8,4 +8,10 @@ public class ListUtils {
         return list.get((int) (Math.random() * list.size()));
     }
 
+    public static <T> T[] getArrayFromList(List<T> list) {
+        Object[] array = new Object[list.size()];
+        for (int i = 0; i < list.size(); i++) array[i] = list.get(i);
+        return (T[]) array;
+    }
+
 }
