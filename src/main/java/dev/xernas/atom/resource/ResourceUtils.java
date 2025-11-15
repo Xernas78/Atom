@@ -13,6 +13,10 @@ import java.util.List;
 
 public class ResourceUtils {
 
+    public static String getResourceString(Path path) throws IOException {
+        return getResourceString(path, Charset.defaultCharset());
+    }
+
     public static String getResourceString(Path path, Charset encoding) throws IOException {
         return new String(getResourceBytes(path), encoding);
     }
