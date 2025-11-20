@@ -22,9 +22,11 @@ public class ResourceUtils {
     }
 
     public static byte[] getResourceBytes(Path path) throws IOException {
-        try (InputStream stream = Files.newInputStream(path, StandardOpenOption.READ)) {
-            return stream.readAllBytes();
-        }
+        return getResourceStream(path).readAllBytes();
+    }
+
+    public static InputStream getResourceStream(Path path) throws IOException {
+        return Files.newInputStream(path, StandardOpenOption.READ);
     }
 
     public static List<Path> list(Path path) throws IOException {
