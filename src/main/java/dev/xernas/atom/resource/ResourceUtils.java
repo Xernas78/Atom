@@ -13,6 +13,8 @@ import java.util.List;
 
 public class ResourceUtils {
 
+    private static final List<FileSystem> CREATED_FILE_SYSTEMS = new ArrayList<>();
+
     public static String getResourceString(Path path) throws IOException {
         return getResourceString(path, Charset.defaultCharset());
     }
@@ -51,8 +53,9 @@ public class ResourceUtils {
         URI resourceUri = resource.toURI();
         if (resourceUri.getScheme().equals("jar")) {
             FileSystem fileSystem;
-            try (FileSystem currentFileSystem = FileSystems.newFileSystem(resourceUri, Collections.emptyMap());) {
-                fileSystem = currentFileSystem;
+            try {
+                fileSystem = FileSystems.newFileSystem(resourceUri, Collections.emptyMap());
+                CREATED_FILE_SYSTEMS.add(fileSystem);
             } catch (FileSystemAlreadyExistsException | IOException e) {
                 fileSystem = FileSystems.getFileSystem(resourceUri);
             }
@@ -60,6 +63,13 @@ public class ResourceUtils {
             return fileSystem.getPath(path);
         }
         return Paths.get(resourceUri);
+    }
+
+    public static void close() throws IOException {
+        for (FileSystem fs : CREATED_FILE_SYSTEMS) {
+            fs.close();
+        }
+        CREATED_FILE_SYSTEMS.clear();
     }
 
     private static ClassLoader getContextClassLoader() {
